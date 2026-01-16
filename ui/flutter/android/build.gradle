@@ -1,11 +1,14 @@
 buildscript {
+    ext.kotlin_version = '1.9.22' // نسخة مستقرة وحديثة
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
+        // تم التحديث ليتوافق مع Gradle 8.4
+        classpath 'com.android.tools.build:gradle:8.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
