@@ -1,6 +1,5 @@
 plugins {
     id "com.android.application"
-    id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -12,10 +11,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     defaultConfig {
@@ -39,9 +34,12 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            proguardFiles
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
 
-            if (System.getenv("APK_KEY_PASSWORD") != null && System.getenv("APK_STORE_PASSWORD") != null) {
+            if (System.getenv("APK_KEY_PASSWORD") != null &&
+                System.getenv("APK_STORE_PASSWORD") != null) {
                 signingConfig signingConfigs.release
             } else {
                 signingConfig signingConfigs.debug
