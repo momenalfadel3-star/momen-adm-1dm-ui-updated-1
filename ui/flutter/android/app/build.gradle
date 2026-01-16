@@ -1,63 +1,71 @@
-plugins {
-    id "com.android.application"
-    id "dev.flutter.flutter-gradle-plugin"
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
 }
 
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
 android {
-    namespace "com.gopeed.gopeed"
-    compileSdk 34
+    // ضع اسم الباكيج الخاص بك هنا
+    namespace "com.example.yourappname" 
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        // ضروري جداً لـ Gradle 8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
-        applicationId "com.gopeed.gopeed"
-        minSdk 21
-        targetSdk 34
-        versionCode flutter.versionCode
-        versionName flutter.versionName
-    }
-
-    signingConfigs {
-        release {
-            keyAlias "upload"
-            keyPassword System.getenv("APK_KEY_PASSWORD")
-            storeFile file("upload-keystore.jks")
-            storePassword System.getenv("APK_STORE_PASSWORD")
-        }
+        // تأكد من أن هذا يطابق اسم الباكيج الخاص بك
+        applicationId "com.example.yourappname"
+        minSdkVersion 21 // أو 23 حسب احتياجك
+        targetSdkVersion 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-
-            if (System.getenv("APK_KEY_PASSWORD") != null &&
-                System.getenv("APK_STORE_PASSWORD") != null) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig signingConfigs.debug
-            }
-        }
-    }
-
-    repositories {
-        flatDir {
-            dirs "libs"
+            signingConfig signingConfigs.debug
         }
     }
 }
 
 flutter {
-    source "../.."
+    source '../..'
 }
 
 dependencies {
-    implementation(name: "libgopeed", ext: "aar")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // يمكنك إضافة مكتبات إضافية هنا إذا كنت تحتاجها
 }
