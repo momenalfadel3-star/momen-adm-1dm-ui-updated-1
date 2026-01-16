@@ -2,10 +2,13 @@ pluginManagement {
     def flutterSdkPath = {
         def properties = new Properties()
         file("local.properties").withInputStream { properties.load(it) }
-        properties.getProperty("flutter.sdk")
-    }()
+        def flutterSdkPath = properties.getProperty("flutter.sdk")
+        assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
+        return flutterSdkPath
+    }
+    settings.ext.flutterSdkPath = flutterSdkPath()
 
-    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+    includeBuild("${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle")
 
     repositories {
         google()
@@ -16,6 +19,9 @@ pluginManagement {
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+    id "com.android.application" version "8.3.0" apply false
+    // التغيير هنا: تحديث Kotlin إلى 1.9.24
+    id "org.jetbrains.kotlin.android" version "1.9.24" apply false
 }
 
 include ":app"
