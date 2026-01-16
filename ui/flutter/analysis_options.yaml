@@ -1,0 +1,18 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/core/ffi/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    unused_element: false
+    unused_field: false
+
+    # icons file uses snake_case constants
+    constant_identifier_names: false
+
+    # some builds don't include this folder; don't fail analyze
+    asset_directory_does_not_exist: false
