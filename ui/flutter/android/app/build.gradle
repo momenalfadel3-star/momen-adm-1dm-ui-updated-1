@@ -26,46 +26,11 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    // ضع اسم الباكيج الخاص بك هنا
-    namespace "com.example.yourappname" 
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        // ضروري جداً لـ Gradle 8
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    defaultConfig {
-        // تأكد من أن هذا يطابق اسم الباكيج الخاص بك
-        applicationId "com.example.yourappname"
-        minSdkVersion 21 // أو 23 حسب احتياجك
-        targetSdkVersion 34
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-    }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
-    }
-}
-
-flutter {
-    source '../..'
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    // يمكنك إضافة مكتبات إضافية هنا إذا كنت تحتاجها
-}
