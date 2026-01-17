@@ -34,3 +34,19 @@ jobs:
 
       # ✅ 1) Ensure assets/exec exists (fix pubspec directory error)
       - name: Ensure assets folders exist
+        run: mkdir -p assets/exec
+
+      # ✅ 2) Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # ✅ 3) Build the APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # ✅ 4) Upload the artifact so you can download it
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: ui/flutter/build/app/outputs/flutter-apk/app-release.apk
